@@ -13,6 +13,9 @@ version = "0.1.0"
 application {
     mainClass.set("io.github.wulkanowy.ApplicationKt")
 }
+task("stage") {
+    dependsOn("installDist")
+}
 
 repositories {
     mavenCentral()
