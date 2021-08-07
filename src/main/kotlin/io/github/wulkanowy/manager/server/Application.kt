@@ -1,8 +1,8 @@
-package io.github.wulkanowy
+package io.github.wulkanowy.manager.server
 
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import io.github.wulkanowy.plugins.*
+import io.github.wulkanowy.manager.server.plugins.*
 
 fun main() {
     val port = System.getenv("PORT")?.toInt() ?: 8080

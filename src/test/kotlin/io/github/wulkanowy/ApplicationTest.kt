@@ -1,6 +1,6 @@
 package io.github.wulkanowy
 
-import io.github.wulkanowy.plugins.configureRouting
+import io.github.wulkanowy.manager.server.plugins.configureRouting
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlin.test.Test

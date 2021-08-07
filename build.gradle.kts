@@ -11,7 +11,7 @@ plugins {
 group = "io.github.wulkanowy"
 version = "0.1.0"
 application {
-    mainClass.set("io.github.wulkanowy.ApplicationKt")
+    mainClass.set("io.github.wulkanowy.manager.server.ApplicationKt")
 }
 task("stage") {
     dependsOn("installDist")
