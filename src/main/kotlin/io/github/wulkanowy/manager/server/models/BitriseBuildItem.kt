@@ -8,4 +8,13 @@ data class BitriseBuildItem(
 
     @SerialName("slug")
     val slug: String,
+
+    @SerialName("build_number")
+    val buildNumber: Int,
+
+    @SerialName("commit_view_url")
+    val commitViewUrl: String,
+
+    @SerialName("finished_at")
+    val finishedAt: String,
 )
