@@ -12,7 +12,7 @@ data class BitriseBuild(
     @SerialName("build_slug")
     val buildSlug: String,
 
-    @SerialName("artifact_url")
+    @SerialName("artifact_slug")
     val artifactSlug: String,
 
     @SerialName("commit_view_url")
