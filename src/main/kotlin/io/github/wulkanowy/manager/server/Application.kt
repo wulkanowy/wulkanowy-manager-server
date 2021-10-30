@@ -5,7 +5,6 @@ import io.github.wulkanowy.manager.server.models.PullRequestBuild
 import io.github.wulkanowy.manager.server.services.BuildsService
 import io.github.wulkanowy.manager.server.services.UnstableService
 import io.ktor.application.*
-import io.ktor.client.features.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.http.content.*
@@ -77,11 +76,18 @@ fun Application.initializePlugins() {
                 message = ApiResponse<String>(success = false, error = "${it.value} ${it.description}")
             )
         }
-        exception<ClientRequestException> { cause ->
+        exception<Throwable> { cause ->
             call.respond(
                 status = HttpStatusCode.InternalServerError,
                 message = ApiResponse<String>(success = false, error = cause.message)
             )
+        }
+        exception<Throwable> { cause ->
+            call.respond(
+                status = HttpStatusCode.InternalServerError,
+                message = ApiResponse<String>(success = false, error = cause.message)
+            )
+            throw cause
         }
     }
     install(ContentNegotiation) {
