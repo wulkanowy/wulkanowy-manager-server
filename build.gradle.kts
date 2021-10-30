@@ -22,6 +22,17 @@ repositories {
     mavenCentral()
 }
 
+val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
+val compileTestKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
+
+compileKotlin.kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_11.toString()
+    freeCompilerArgs = listOf(*freeCompilerArgs.toTypedArray(), "-Xopt-in=kotlin.RequiresOptIn")
+}
+compileTestKotlin.kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_11.toString()
+}
+
 dependencies {
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-serialization:$ktor_version")
@@ -29,6 +40,7 @@ dependencies {
 
     implementation("io.ktor:ktor-client-cio:$ktor_version")
     implementation("io.ktor:ktor-client-serialization-jvm:$ktor_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
