@@ -57,6 +57,14 @@ fun Application.initializeRouting() {
                 )
             )
         }
+        get("/v1/download/app/{appId}/build/{buildId}/artifact/{artifactId}") {
+            val redirectUrl = buildsService.getDownloadPageRedirect(
+                appId = call.parameters["appId"]!!,
+                buildId = call.parameters["buildId"]!!,
+                artifactId = call.parameters["artifactId"]!!,
+            )
+            call.respondRedirect(redirectUrl, permanent = false)
+        }
         static {
             staticRootFolder = File("src/main/resources/")
             file("favicon.ico")

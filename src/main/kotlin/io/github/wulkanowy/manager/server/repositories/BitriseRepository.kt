@@ -6,6 +6,9 @@ import io.github.wulkanowy.manager.server.models.BitriseResponse
 import io.github.wulkanowy.manager.server.models.BuildArtifactData
 import io.ktor.client.*
 import io.ktor.client.request.*
+import io.ktor.client.response.*
+import io.ktor.client.statement.*
+import io.ktor.client.statement.HttpResponse
 
 class BitriseRepository(
     private val client: HttpClient
