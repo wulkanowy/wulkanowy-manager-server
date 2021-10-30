@@ -46,8 +46,13 @@ fun Application.initializeRouting() {
         get("/v1/develop") {
             call.respond(ApiResponse(success = true, data = listOf<PullRequestBuild>()))
         }
-        get("/v1/unstable") {
-            call.respond(unstableService.getLatestBuilds())
+        get("/v1/pr/app/{appId}/repo/{repo}") {
+            call.respond(
+                unstableService.getLatestBuilds(
+                    appId = call.parameters["appId"]!!,
+                    repoName = call.parameters["repo"]!!,
+                )
+            )
         }
         get("/v1/build/app/{appId}/branch/{branch...}") {
             call.respond(

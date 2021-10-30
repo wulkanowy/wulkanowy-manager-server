@@ -17,7 +17,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val mainModule = module {
-    single { UnstableService(get()) }
+    single { UnstableService(get(), get()) }
     single { BuildsService(get()) }
     single { GithubRepository(get(named("github"))) }
     single { BitriseRepository(get(named("bitrise"))) }

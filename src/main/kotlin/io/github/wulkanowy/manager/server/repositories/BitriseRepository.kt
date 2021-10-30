@@ -1,20 +1,31 @@
 package io.github.wulkanowy.manager.server.repositories
 
-import io.github.wulkanowy.manager.server.models.BitriseArtifactInfoData
-import io.github.wulkanowy.manager.server.models.BitriseBuildItem
-import io.github.wulkanowy.manager.server.models.BitriseResponse
-import io.github.wulkanowy.manager.server.models.BuildArtifactData
+import io.github.wulkanowy.manager.server.models.*
 import io.ktor.client.*
 import io.ktor.client.request.*
-import io.ktor.client.response.*
-import io.ktor.client.statement.*
-import io.ktor.client.statement.HttpResponse
 
 class BitriseRepository(
     private val client: HttpClient
 ) {
     companion object {
         private const val BITRISE_BASE = "https://api.bitrise.io/v0.1/apps"
+    }
+
+    suspend fun getLastBuildsForBranch(appId: String, branchName: String): List<BitriseBuild> {
+        val builds = getBuildsByBranchName(appId, branchName, 1)
+        if (builds.isEmpty()) {
+            return emptyList()
+        }
+
+        return getArtifactsByBuildSlug(appId, builds[0].slug, 1).map {
+            BitriseBuild(
+                buildNumber = builds[0].buildNumber,
+                buildSlug = builds[0].slug,
+                artifactSlug = it.slug,
+                commitViewUrl = builds[0].commitViewUrl,
+                finishedAt = builds[0].finishedAt,
+            )
+        }
     }
 
     /**

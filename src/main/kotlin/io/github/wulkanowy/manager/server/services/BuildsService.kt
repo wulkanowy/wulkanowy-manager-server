@@ -9,21 +9,13 @@ class BuildsService(
 ) {
 
     suspend fun getLastBuildFromBranch(appId: String, branchName: String): ApiResponse<BitriseBuild> {
-        val builds = bitriseRepository.getBuildsByBranchName(appId, branchName, 1)
+        val builds = bitriseRepository.getLastBuildsForBranch(appId, branchName)
+
         if (builds.isEmpty()) {
             return ApiResponse(success = false, error = "There is no successful builds for branch $branchName")
         }
 
-        val buildArtifact = bitriseRepository.getArtifactsByBuildSlug(appId, builds[0].slug, 1)[0]
-        val bitriseBuild = BitriseBuild(
-            buildNumber = builds[0].buildNumber,
-            buildSlug = builds[0].slug,
-            artifactSlug = buildArtifact.slug,
-            commitViewUrl = builds[0].commitViewUrl,
-            finishedAt = builds[0].finishedAt,
-        )
-
-        return ApiResponse(success = true, data = bitriseBuild)
+        return ApiResponse(success = true, data = builds[0])
     }
 
     suspend fun getDownloadPageRedirect(appId: String, branchName: String): String {
