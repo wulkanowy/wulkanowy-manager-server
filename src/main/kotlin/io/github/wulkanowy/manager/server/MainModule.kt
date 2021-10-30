@@ -16,6 +16,7 @@ val mainModule = module {
             install(JsonFeature) {
                 serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
                     ignoreUnknownKeys = true
+
                 })
             }
         }

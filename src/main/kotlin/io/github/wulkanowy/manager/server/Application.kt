@@ -1,5 +1,6 @@
 package io.github.wulkanowy.manager.server
 
+import io.github.wulkanowy.manager.server.models.ApiResponse
 import io.github.wulkanowy.manager.server.models.PullRequestBuild
 import io.github.wulkanowy.manager.server.services.UnstableService
 import io.ktor.application.*
@@ -32,10 +33,10 @@ fun Application.initializeRouting() {
 
     routing {
         get("/v1/stable") {
-            call.respond(listOf<PullRequestBuild>())
+            call.respond(ApiResponse(success = true, data = listOf<PullRequestBuild>()))
         }
         get("/v1/develop") {
-            call.respond(listOf<PullRequestBuild>())
+            call.respond(ApiResponse(success = true, data = listOf<PullRequestBuild>()))
         }
         get("/v1/unstable") {
             call.respond(unstableService.getLatestBuilds())

@@ -4,7 +4,6 @@ import io.github.wulkanowy.manager.server.models.BitriseBuild
 import io.github.wulkanowy.manager.server.models.GithubPullRequestsItem
 import io.github.wulkanowy.manager.server.models.PullRequestBuild
 import io.ktor.client.*
-import io.ktor.client.features.*
 import io.ktor.client.request.*
 
 class GithubRepository constructor(private val client: HttpClient) {
@@ -17,13 +16,8 @@ class GithubRepository constructor(private val client: HttpClient) {
         private const val BITRISE_ARTIFACT = "artifacts/0/info"
     }
 
-    suspend fun getPullRequests() = client.get<List<GithubPullRequestsItem>>(PULL_REQUESTS).mapNotNull {
-        val build = try {
-            client.get<BitriseBuild>("$BITRISE_BASE/${it.head.ref}/$BITRISE_ARTIFACT")
-        } catch (e: ClientRequestException) {
-            println(e.message)
-            return@mapNotNull null
-        }
+    suspend fun getPullRequests() = client.get<List<GithubPullRequestsItem>>(PULL_REQUESTS).map {
+        val build = client.get<BitriseBuild>("$BITRISE_BASE/${it.head.ref}/$BITRISE_ARTIFACT")
         PullRequestBuild(
             title = it.title,
             number = it.number,
