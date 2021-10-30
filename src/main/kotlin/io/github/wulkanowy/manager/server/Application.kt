@@ -101,6 +101,9 @@ fun Application.initializePlugins() {
     install(ContentNegotiation) {
         json()
     }
+    install(CORS) {
+        anyHost()
+    }
     install(Koin) {
         SLF4JLogger()
         modules(mainModule)
