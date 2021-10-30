@@ -57,6 +57,13 @@ fun Application.initializeRouting() {
                 )
             )
         }
+        get("/v1/download/app/{appId}/branch/{branch...}") {
+            val redirectUrl = buildsService.getDownloadPageRedirect(
+                appId = call.parameters["appId"]!!,
+                branchName = call.parameters.getAll("branch")!!.joinToString("/")
+            )
+            call.respondRedirect(redirectUrl, permanent = false)
+        }
         get("/v1/download/app/{appId}/build/{buildId}/artifact/{artifactId}") {
             val redirectUrl = buildsService.getDownloadPageRedirect(
                 appId = call.parameters["appId"]!!,
