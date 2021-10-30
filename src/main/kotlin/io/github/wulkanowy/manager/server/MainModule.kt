@@ -7,6 +7,7 @@ import io.github.wulkanowy.manager.server.services.UnstableService
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.*
+import io.ktor.client.features.cache.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
@@ -32,6 +33,7 @@ val mainModule = module {
             install(JsonFeature) {
                 serializer = KotlinxSerializer(get())
             }
+            install(HttpCache)
             defaultRequest {
                 header("Authorization", "token " + System.getenv("API_KEY"))
             }
