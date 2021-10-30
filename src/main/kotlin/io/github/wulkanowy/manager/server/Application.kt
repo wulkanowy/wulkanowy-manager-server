@@ -32,6 +32,9 @@ fun Application.initializeRouting() {
     val unstableService: UnstableService by inject()
 
     routing {
+        get("/") {
+            call.respond(ApiResponse(success = true, data = "Welcome to Wulkanowy Manager Server!"))
+        }
         get("/v1/stable") {
             call.respond(ApiResponse(success = true, data = listOf<PullRequestBuild>()))
         }
