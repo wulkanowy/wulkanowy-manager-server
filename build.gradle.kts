@@ -34,16 +34,20 @@ compileTestKotlin.kotlinOptions {
 }
 
 dependencies {
+    // server
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-serialization:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
 
+    // client
     implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-logging:$ktor_version")
     implementation("io.ktor:ktor-client-serialization-jvm:$ktor_version")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
+    // di
     implementation("io.insert-koin:koin-core:$koin_version")
     implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")

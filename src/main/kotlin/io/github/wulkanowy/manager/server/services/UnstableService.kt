@@ -9,10 +9,8 @@ class UnstableService(
 ) {
 
     suspend fun getLatestBuilds(): ApiResponse<List<PullRequestBuild>> {
-        return try {
-            ApiResponse(success = true, data = githubRepository.getPullRequests())
-        } catch (e: Throwable) {
-            ApiResponse(success = false, error = e.message, data = null)
-        }
+        val pullRequests = githubRepository.getPullRequests()
+
+        return ApiResponse(success = true, data = pullRequests)
     }
 }

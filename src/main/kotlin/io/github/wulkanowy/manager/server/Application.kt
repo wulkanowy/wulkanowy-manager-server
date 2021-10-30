@@ -2,8 +2,10 @@ package io.github.wulkanowy.manager.server
 
 import io.github.wulkanowy.manager.server.models.ApiResponse
 import io.github.wulkanowy.manager.server.models.PullRequestBuild
+import io.github.wulkanowy.manager.server.services.BuildsService
 import io.github.wulkanowy.manager.server.services.UnstableService
 import io.ktor.application.*
+import io.ktor.client.features.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.http.content.*
@@ -33,6 +35,7 @@ fun Application.main() {
 
 fun Application.initializeRouting() {
     val unstableService: UnstableService by inject()
+    val buildsService: BuildsService by inject()
 
     routing {
         get("/") {
@@ -47,8 +50,13 @@ fun Application.initializeRouting() {
         get("/v1/unstable") {
             call.respond(unstableService.getLatestBuilds())
         }
-        get("/v1/build/{branch}/artifacts/{index}/info") {
-            call.respond("Branch: ${call.parameters["branch"]}")
+        get("/v1/build/app/{appId}/branch/{branch...}") {
+            call.respond(
+                buildsService.getLastBuildFromBranch(
+                    appId = call.parameters["appId"]!!,
+                    branchName = call.parameters.getAll("branch")!!.joinToString("/")
+                )
+            )
         }
         static {
             staticRootFolder = File("src/main/resources/")
@@ -64,7 +72,16 @@ fun Application.initializePlugins() {
     }
     install(StatusPages) {
         status(HttpStatusCode.NotFound) {
-            call.respond(HttpStatusCode.NotFound, ApiResponse(success = false, data = "${it.value} ${it.description}"))
+            call.respond(
+                status = HttpStatusCode.NotFound,
+                message = ApiResponse<String>(success = false, error = "${it.value} ${it.description}")
+            )
+        }
+        exception<ClientRequestException> { cause ->
+            call.respond(
+                status = HttpStatusCode.InternalServerError,
+                message = ApiResponse<String>(success = false, error = cause.message)
+            )
         }
     }
     install(ContentNegotiation) {
