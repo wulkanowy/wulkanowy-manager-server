@@ -86,13 +86,9 @@ fun Application.initializeRouting() {
 }
 
 fun Application.initializeCaching() {
-    install(CachingHeaders) {
-        options { outgoingContent ->
-            when (outgoingContent.contentType?.withoutParameters()) {
-                ContentType.Application.Json -> CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 3601))
-                else -> null
-            }
-        }
+    install(DefaultHeaders) {
+        header("Cloudflare-CDN-Cache-Control", "max-age=3600")
+        header("CDN-Cache-Control", "3600")
     }
 }
 
