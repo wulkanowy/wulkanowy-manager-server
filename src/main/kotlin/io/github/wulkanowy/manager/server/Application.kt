@@ -29,6 +29,7 @@ fun main() {
 
 fun Application.main() {
     initializePlugins()
+    initializeCaching()
     initializeRouting()
 }
 
@@ -80,6 +81,17 @@ fun Application.initializeRouting() {
         static {
             staticRootFolder = File("src/main/resources/")
             file("favicon.ico")
+        }
+    }
+}
+
+fun Application.initializeCaching() {
+    install(CachingHeaders) {
+        options { outgoingContent ->
+            when (outgoingContent.contentType?.withoutParameters()) {
+                ContentType.Application.Json -> CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 3601))
+                else -> null
+            }
         }
     }
 }
