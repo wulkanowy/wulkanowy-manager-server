@@ -12,7 +12,7 @@ class BuildsService(
         val builds = bitriseRepository.getLastBuildsForBranch(appId, branchName)
 
         if (builds.isEmpty()) {
-            return ApiResponse(success = false, error = "There is no successful builds for branch $branchName")
+            return ApiResponse(success = false, error = "There are no successful builds for branch $branchName")
         }
 
         return ApiResponse(success = true, data = builds[0])
