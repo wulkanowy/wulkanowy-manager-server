@@ -16,7 +16,7 @@ data class BitriseBuild(
     val artifactSlug: String,
 
     @SerialName("commit_view_url")
-    val commitViewUrl: String,
+    val commitViewUrl: String?,
 
     @SerialName("finished_at")
     val finishedAt: String,

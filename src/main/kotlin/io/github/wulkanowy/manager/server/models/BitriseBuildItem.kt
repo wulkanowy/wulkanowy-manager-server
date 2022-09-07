@@ -13,7 +13,7 @@ data class BitriseBuildItem(
     val buildNumber: Int,
 
     @SerialName("commit_view_url")
-    val commitViewUrl: String,
+    val commitViewUrl: String?,
 
     @SerialName("finished_at")
     val finishedAt: String,
