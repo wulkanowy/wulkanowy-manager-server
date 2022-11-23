@@ -2,6 +2,7 @@ package io.github.wulkanowy.manager.server.repositories
 
 import io.github.wulkanowy.manager.server.models.*
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 
 class BitriseRepository(
@@ -32,20 +33,20 @@ class BitriseRepository(
      * @see [https://api-docs.bitrise.io/#/builds/build-list]
      */
     suspend fun getBuildsByBranchName(appId: String, branchName: String, limit: Int): List<BitriseBuildItem> {
-        return client.get<BitriseResponse<List<BitriseBuildItem>>>("$BITRISE_BASE/$appId/builds") {
+        return client.get("$BITRISE_BASE/$appId/builds") {
             parameter("branch", branchName)
             parameter("status", 1)
             parameter("limit", limit)
-        }.data!!
+        }.body<BitriseResponse<List<BitriseBuildItem>>>().data!!
     }
 
     /**
      * @see [https://api-docs.bitrise.io/#/build-artifact/artifact-list]]
      */
     suspend fun getArtifactsByBuildSlug(appId: String, buildSlug: String, limit: Int): List<BuildArtifactData> {
-        return client.get<BitriseResponse<List<BuildArtifactData>>>("$BITRISE_BASE/$appId/builds/$buildSlug/artifacts") {
+        return client.get("$BITRISE_BASE/$appId/builds/$buildSlug/artifacts") {
             parameter("limit", limit)
-        }.data!!
+        }.body<BitriseResponse<List<BuildArtifactData>>>().data!!
     }
 
     /**
@@ -54,6 +55,7 @@ class BitriseRepository(
     suspend fun getArtifactByArtifactSlug(
         appId: String, buildSlug: String, artifactSlug: String
     ): BitriseArtifactInfoData {
-        return client.get<BitriseResponse<BitriseArtifactInfoData>>("$BITRISE_BASE/$appId/builds/$buildSlug/artifacts/$artifactSlug").data!!
+        return client.get("$BITRISE_BASE/$appId/builds/$buildSlug/artifacts/$artifactSlug")
+            .body<BitriseResponse<BitriseArtifactInfoData>>().data!!
     }
 }

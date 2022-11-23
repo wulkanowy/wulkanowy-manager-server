@@ -2,6 +2,7 @@ package io.github.wulkanowy.manager.server.repositories
 
 import io.github.wulkanowy.manager.server.models.GithubPullRequestsItem
 import io.ktor.client.*
+import io.ktor.client.call.body
 import io.ktor.client.request.*
 
 class GithubRepository constructor(private val client: HttpClient) {
@@ -12,5 +13,5 @@ class GithubRepository constructor(private val client: HttpClient) {
     }
 
     suspend fun getPullRequests(repoName: String): List<GithubPullRequestsItem> =
-        client.get("$GITHUB_BASE_URL/$repoName/$PULL_REQUESTS")
+        client.get("$GITHUB_BASE_URL/$repoName/$PULL_REQUESTS").body()
 }

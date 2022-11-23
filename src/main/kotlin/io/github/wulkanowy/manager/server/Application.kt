@@ -4,18 +4,22 @@ import io.github.wulkanowy.manager.server.models.ApiResponse
 import io.github.wulkanowy.manager.server.models.PullRequestBuild
 import io.github.wulkanowy.manager.server.services.BuildsService
 import io.github.wulkanowy.manager.server.services.UnstableService
-import io.ktor.application.*
-import io.ktor.features.*
 import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
-import io.ktor.serialization.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.application.*
 import io.ktor.server.engine.*
+import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
-import org.koin.ktor.ext.Koin
+import io.ktor.server.plugins.callloging.*
+import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.cors.routing.*
+import io.ktor.server.plugins.defaultheaders.*
+import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
+import org.koin.ktor.plugin.Koin
 import org.koin.logger.SLF4JLogger
 import org.slf4j.event.Level
 import java.io.File
@@ -98,19 +102,19 @@ fun Application.initializePlugins() {
         filter { call -> call.request.path().startsWith("/") }
     }
     install(StatusPages) {
-        status(HttpStatusCode.NotFound) {
+        status(HttpStatusCode.NotFound) { call, status ->
             call.respond(
                 status = HttpStatusCode.NotFound,
-                message = ApiResponse<String>(success = false, error = "${it.value} ${it.description}")
+                message = ApiResponse<String>(success = false, error = "${status.value} ${status.description}")
             )
         }
-        exception<Throwable> { cause ->
+        exception<Throwable> { call, cause ->
             call.respond(
                 status = HttpStatusCode.InternalServerError,
                 message = ApiResponse<String>(success = false, error = cause.message)
             )
         }
-        exception<Throwable> { cause ->
+        exception<Throwable> { call, cause ->
             call.respond(
                 status = HttpStatusCode.InternalServerError,
                 message = ApiResponse<String>(success = false, error = cause.message)

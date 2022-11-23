@@ -6,12 +6,12 @@ import io.github.wulkanowy.manager.server.services.BuildsService
 import io.github.wulkanowy.manager.server.services.UnstableService
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
-import io.ktor.client.features.*
-import io.ktor.client.features.cache.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.logging.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.cache.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -31,8 +31,8 @@ val mainModule = module {
             install(Logging) {
                 level = LogLevel.INFO
             }
-            install(JsonFeature) {
-                serializer = KotlinxSerializer(get())
+            install(ContentNegotiation) {
+                json()
             }
             install(HttpCache)
             defaultRequest {
@@ -45,8 +45,8 @@ val mainModule = module {
             install(Logging) {
                 level = LogLevel.INFO
             }
-            install(JsonFeature) {
-                serializer = KotlinxSerializer(get())
+            install(ContentNegotiation) {
+                json()
             }
             install(HttpCache)
             defaultRequest {
