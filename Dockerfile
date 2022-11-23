@@ -9,4 +9,4 @@ RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/
 
 ENV PORT=3001
-ENTRYPOINT ["java","-jar","/app/manager-server-0.2.0.jar"]
+ENTRYPOINT ["java","-jar","/app/manager-server-all.jar"]
