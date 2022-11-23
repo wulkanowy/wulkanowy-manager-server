@@ -6,6 +6,7 @@ val logback_version: String by project
 plugins {
     application
     kotlin("jvm") version "1.7.21"
+    id("io.ktor.plugin") version "2.1.3"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.21"
 }
 
@@ -27,7 +28,6 @@ val compileTestKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
 
 compileKotlin.kotlinOptions {
     jvmTarget = JavaVersion.VERSION_11.toString()
-    freeCompilerArgs = listOf(*freeCompilerArgs.toTypedArray(), "-Xopt-in=kotlin.RequiresOptIn")
 }
 compileTestKotlin.kotlinOptions {
     jvmTarget = JavaVersion.VERSION_11.toString()

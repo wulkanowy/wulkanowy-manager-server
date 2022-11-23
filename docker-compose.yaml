@@ -1,0 +1,13 @@
+version: "3.5"
+services:
+  manager:
+    build: .
+    ports:
+      - "3001:3001"
+    networks:
+      - internal_network
+
+networks:
+  internal_network:
+    external:
+      name: wulkanowy_network
