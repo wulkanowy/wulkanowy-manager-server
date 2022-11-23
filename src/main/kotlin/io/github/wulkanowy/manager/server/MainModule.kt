@@ -32,7 +32,9 @@ val mainModule = module {
                 level = LogLevel.INFO
             }
             install(ContentNegotiation) {
-                json()
+                json(Json {
+                    ignoreUnknownKeys = true
+                })
             }
             install(HttpCache)
             defaultRequest {
@@ -46,7 +48,9 @@ val mainModule = module {
                 level = LogLevel.INFO
             }
             install(ContentNegotiation) {
-                json()
+                json(Json {
+                    ignoreUnknownKeys = true
+                })
             }
             install(HttpCache)
             defaultRequest {
