@@ -113,12 +113,6 @@ fun Application.initializePlugins() {
                 status = HttpStatusCode.InternalServerError,
                 message = ApiResponse<String>(success = false, error = cause.message)
             )
-        }
-        exception<Throwable> { call, cause ->
-            call.respond(
-                status = HttpStatusCode.InternalServerError,
-                message = ApiResponse<String>(success = false, error = cause.message)
-            )
             throw cause
         }
     }

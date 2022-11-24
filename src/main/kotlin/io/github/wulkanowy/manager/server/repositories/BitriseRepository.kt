@@ -4,6 +4,7 @@ import io.github.wulkanowy.manager.server.models.*
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
+import io.ktor.http.*
 
 class BitriseRepository(
     private val client: HttpClient
@@ -55,7 +56,12 @@ class BitriseRepository(
     suspend fun getArtifactByArtifactSlug(
         appId: String, buildSlug: String, artifactSlug: String
     ): BitriseArtifactInfoData {
-        return client.get("$BITRISE_BASE/$appId/builds/$buildSlug/artifacts/$artifactSlug")
-            .body<BitriseResponse<BitriseArtifactInfoData>>().data!!
+        val response = client.get("$BITRISE_BASE/$appId/builds/$buildSlug/artifacts/$artifactSlug")
+
+        if (response.status == HttpStatusCode.Unauthorized) {
+            throw Exception(response.status.description)
+        }
+
+        return response.body<BitriseResponse<BitriseArtifactInfoData>>().data!!
     }
 }
