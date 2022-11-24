@@ -6,7 +6,7 @@ RUN gradle buildFatJar --no-daemon
 FROM openjdk:11
 EXPOSE 3001
 RUN mkdir /app
-COPY --from=build /home/gradle/.env /home/gradle/src/build/libs/*.jar /app/
+COPY --from=build /home/gradle/src/.env /home/gradle/src/build/libs/*.jar /app/
 
 ENV PORT=3001
 ENTRYPOINT ["java","-jar","/app/manager-server-all.jar"]
