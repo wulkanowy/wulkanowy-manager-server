@@ -1,6 +1,5 @@
 package io.github.wulkanowy.manager.server
 
-import io.github.cdimascio.dotenv.dotenv
 import io.github.wulkanowy.manager.server.repositories.BitriseRepository
 import io.github.wulkanowy.manager.server.repositories.GithubRepository
 import io.github.wulkanowy.manager.server.services.BuildsService
@@ -16,8 +15,6 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-
-val dotenv = dotenv()
 
 val mainModule = module {
     single { UnstableService(get(), get()) }
@@ -41,7 +38,7 @@ val mainModule = module {
             }
             install(HttpCache)
             defaultRequest {
-                header("Authorization", "token " + dotenv["BITRISE_API_KEY"])
+                header("Authorization", "token " + System.getenv("BITRISE_API_KEY"))
             }
         }
     }
@@ -51,15 +48,12 @@ val mainModule = module {
                 level = LogLevel.INFO
             }
             install(ContentNegotiation) {
-                json(Json {
-                    ignoreUnknownKeys = true
-                })
+                json()
             }
             install(HttpCache)
             defaultRequest {
-                val githubToken = dotenv["API_GITHUB_TOKEN"]
-                if (!githubToken.isNullOrBlank()) {
-                    header("Authorization", "token $githubToken")
+                System.getenv("API_GITHUB_TOKEN").takeIf { !it.isNullOrBlank() }?.let {
+                    header("Authorization", "token $it")
                 }
             }
         }
