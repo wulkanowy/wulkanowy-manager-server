@@ -10,6 +10,11 @@ jobs:
     environment: oracle-cloud
     steps:
       - uses: actions/checkout@v2
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_BITRISE_API_KEY: ${{ secrets.BITRISE_API_KEY }}
+          envkey_GITHUB_API_KEY: ${{ secrets.GITHUB_API_KEY }}
       - uses: alex-ac/github-action-ssh-docker-compose@master
         name: Docker-Compose Remote Deployment
         with:
