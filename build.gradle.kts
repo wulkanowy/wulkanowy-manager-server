@@ -5,13 +5,13 @@ val logback_version: String by project
 
 plugins {
     application
-    kotlin("jvm") version "1.7.21"
-    id("io.ktor.plugin") version "2.1.3"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.21"
+    kotlin("jvm") version "1.9.22"
+    id("io.ktor.plugin") version "2.3.7"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
 }
 
 group = "io.github.wulkanowy"
-version = "0.2.0"
+version = "0.2.1"
 application {
     mainClass.set("io.github.wulkanowy.manager.server.ApplicationKt")
 }
@@ -27,10 +27,10 @@ val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
 val compileTestKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
 
 compileKotlin.kotlinOptions {
-    jvmTarget = JavaVersion.VERSION_11.toString()
+    jvmTarget = JavaVersion.VERSION_17.toString()
 }
 compileTestKotlin.kotlinOptions {
-    jvmTarget = JavaVersion.VERSION_11.toString()
+    jvmTarget = JavaVersion.VERSION_17.toString()
 }
 
 dependencies {
